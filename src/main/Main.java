@@ -50,33 +50,33 @@ public class Main {
 		}
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	
-//		try {
-//			// 데이터 베이스 연결
-//			con = pool.getConnection();
-//			
-//			// 쿼리문 작성
-//			String sql = "insert into user_tb values(0, ?, ?)";
-//			
-//			// 쿼리문 가공 준비
-//			pstmt = con.prepareStatement(sql);
-//			
-//			// 쿼리문 가공
-//			pstmt.setString(1, "ttt");	// 첫번째 ? 에 ttt를 넣는다.
-//			pstmt.setString(2, "1234");	// 두번째 ? 에 1234를 넣는다.
-//			
-//			// 쿼리문 실행
-//			int successCount = pstmt.executeUpdate();
-//			System.out.println("insert 성공 횟수: " + successCount);
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			// 예외가 발생했을 시 소멸이 안될 수 있으니 예외가 되더라도 정상적으로 실행되더라도 무조건 실행할수 있도록 finally로
-//			
-//			// 생성된 rs, pstmt, con 객체 소멸 (DB와 연결 해제)
-//			pool.freeConnection(con, pstmt);
-//		}
+	
+		try {
+			// 데이터 베이스 연결
+			con = pool.getConnection();
+			
+			// 쿼리문 작성
+			String sql = "insert into user_tb values(0, ?, ?)";
+			
+			// 쿼리문 가공 준비
+			pstmt = con.prepareStatement(sql);
+			
+			// 쿼리문 가공
+			pstmt.setString(1, "ttt");	// 첫번째 ? 에 ttt를 넣는다.
+			pstmt.setString(2, "1234");	// 두번째 ? 에 1234를 넣는다.
+			
+			// 쿼리문 실행
+			int successCount = pstmt.executeUpdate();
+			System.out.println("insert 성공 횟수: " + successCount);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 예외가 발생했을 시 소멸이 안될 수 있으니 예외가 되더라도 정상적으로 실행되더라도 무조건 실행할수 있도록 finally로
+			
+			// 생성된 rs, pstmt, con 객체 소멸 (DB와 연결 해제)
+			pool.freeConnection(con, pstmt);
+		}
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
