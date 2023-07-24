@@ -1,0 +1,26 @@
+# [ STS4 ]
+# folder
+.settings
+bin
+target
+# file
+.classpath
+.project
+.factorypath
+
+# [ Intellij ]
+# folder
+.idea
+# file
+*.iml
+
+
+
+
+
+
+
+
+
+
+/.metadata/
