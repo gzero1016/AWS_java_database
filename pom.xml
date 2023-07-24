@@ -19,6 +19,11 @@
     <scope>provided</scope>
 </dependency>
 
+  	<dependency>
+  		<groupId>aws_java_jiyoung</groupId>
+  		<artifactId>aws_java_jiyoung</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
   
   <build>
