@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,6 +28,7 @@ public class RegistratioinUser extends JFrame {
 	private JTextField usernametextField;
 	private JTextField passwordtextField;
 	private JTable table;
+	private String deleteName;
 	
 	private static List<Object> dtlList = new ArrayList<>();
 	private static List<List<Object>> mstList = new ArrayList<>();
@@ -79,13 +81,26 @@ public class RegistratioinUser extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		JButton addUserButton = new JButton("추가");
+		
+		
+//		MouseListener addUserButtonListener = new AddUserButtonMouseListener();
+//		addUserButton.addMouseListener(addUserButtonListener);
+		// 위 코드랑 아래 코드가 똑같음
+//		MouseListener 인터페이스 안에 메소드가 여러개 정의되어있어 람다를 쓸수 없음
 		addUserButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				insertUser(usernametextField.getText(), passwordtextField.getText());
-				table.setModel(getUserTableModel());
+				if(!insertUser(usernametextField.getText(), passwordtextField.getText())) {
+					JOptionPane.showMessageDialog(contentPane, "사용자 추가 실패!", "insert 오류", JOptionPane.ERROR_MESSAGE);
+					return;
+				}else {
+					JOptionPane.showMessageDialog(contentPane, "사용자 추가 완료!", "insert 성공", JOptionPane.PLAIN_MESSAGE);
+				}
+				updateUserListTable(table);
 			}
 		});
+		
+		
 		addUserButton.setBounds(12, 70, 315, 26);
 		contentPane.add(addUserButton);
 		
@@ -101,13 +116,17 @@ public class RegistratioinUser extends JFrame {
 		deleteButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				deleteUser(usernametextField.getText());
-				table.setModel(getUserTableModel());
+				if(!deleteUser(usernametextField.getText())) {
+					JOptionPane.showMessageDialog(contentPane, "사용자 삭제 실패!", "delete 오류", JOptionPane.ERROR_MESSAGE);
+					return;
+				}else {
+					JOptionPane.showMessageDialog(contentPane, "사용자 삭제 완료!", "delete 성공", JOptionPane.PLAIN_MESSAGE);
+				}
+				updateUserListTable(table);
 			}
 		});
 		deleteButton.setBounds(339, 70, 83, 26);
 		contentPane.add(deleteButton);
-
 	}
 	
 	// 배열로 바꾸는작업
@@ -122,8 +141,12 @@ public class RegistratioinUser extends JFrame {
 				 userModelArray[i][j] = userListAll.get(i).get(j);
 			}
 		}
-		
 		return new DefaultTableModel(userModelArray, header);
+	}
+	
+	// insert, delete 후 테이블 업데이트
+	private void updateUserListTable(JTable jTable) {
+		jTable.setModel(getUserTableModel());
 	}
 	
 	// select
@@ -159,10 +182,11 @@ public class RegistratioinUser extends JFrame {
 	}
 	
 	// insert
-	public void insertUser(String username, String password) {
+	private boolean insertUser(String username, String password) {
 		DBConnectionMgr pool = DBConnectionMgr.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		boolean result = false;
 		
 		try {
 			con = pool.getConnection();
@@ -174,22 +198,23 @@ public class RegistratioinUser extends JFrame {
 			pstmt.setString(1, username);
 			pstmt.setString(2, password);
 			
-			pstmt.executeUpdate();
-			
-			System.out.println("insert Successfully!!");
+			// update가 정상처리되었다면 result에 true를 넣어준다.
+			result = pstmt.executeUpdate() != 0;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
+		return result;
 	}
 	
 	// delete
-	public void deleteUser(String username) {
+	private boolean deleteUser(String username) {		
 		DBConnectionMgr pool = DBConnectionMgr.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		boolean result = false;
 		
 		try {
 			con = pool.getConnection();
@@ -199,14 +224,14 @@ public class RegistratioinUser extends JFrame {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, username);
 			
-			pstmt.executeUpdate();
+			result = pstmt.executeUpdate() != 0;
 			
-			System.out.println("delete Successfully!!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
+		return result;
 	}
 }
 
