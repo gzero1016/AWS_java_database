@@ -101,7 +101,7 @@ public class RegistratioinUser extends JFrame {
 		});
 		
 		
-		addUserButton.setBounds(12, 70, 315, 26);
+		addUserButton.setBounds(12, 70, 410, 26);
 		contentPane.add(addUserButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -111,22 +111,6 @@ public class RegistratioinUser extends JFrame {
 		table = new JTable();
 		table.setModel(getUserTableModel());
 		scrollPane.setViewportView(table);
-		
-		JButton deleteButton = new JButton("삭제");
-		deleteButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(!deleteUser(usernametextField.getText())) {
-					JOptionPane.showMessageDialog(contentPane, "사용자 삭제 실패!", "delete 오류", JOptionPane.ERROR_MESSAGE);
-					return;
-				}else {
-					JOptionPane.showMessageDialog(contentPane, "사용자 삭제 완료!", "delete 성공", JOptionPane.PLAIN_MESSAGE);
-				}
-				updateUserListTable(table);
-			}
-		});
-		deleteButton.setBounds(339, 70, 83, 26);
-		contentPane.add(deleteButton);
 	}
 	
 	// 배열로 바꾸는작업
@@ -199,31 +183,6 @@ public class RegistratioinUser extends JFrame {
 			pstmt.setString(2, password);
 			
 			// update가 정상처리되었다면 result에 true를 넣어준다.
-			result = pstmt.executeUpdate() != 0;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt);
-		}
-		return result;
-	}
-	
-	// delete
-	private boolean deleteUser(String username) {		
-		DBConnectionMgr pool = DBConnectionMgr.getInstance();
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		boolean result = false;
-		
-		try {
-			con = pool.getConnection();
-			
-			String sql = "delete from user_tb where username = ?";
-			
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, username);
-			
 			result = pstmt.executeUpdate() != 0;
 			
 		} catch (Exception e) {
