@@ -44,7 +44,7 @@ public class DBConnectionMgr {
 
     private Vector connections = new Vector(10);
     private String _driver = "com.mysql.cj.jdbc.Driver",	// driver의 경로를 작성해줘야함
-    _url = "jdbc:mysql://localhost:3306/study3",	// 서버주소/데이터베이스명 작성
+    _url = "jdbc:mysql://localhost:3306/product",	// 서버주소/데이터베이스명 작성
     _user = "root",
     _password = "1q2w3e4r";
     
