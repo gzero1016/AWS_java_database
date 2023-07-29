@@ -1,6 +1,7 @@
 package frame;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -39,8 +40,27 @@ public class ProductSearchFrame extends JFrame {
 	
 	private static ProductSearchFrame instance;
 
-	private ProductSearchFrame() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ProductSearchFrame frame = new ProductSearchFrame();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public ProductSearchFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -57,15 +77,15 @@ public class ProductSearchFrame extends JFrame {
 		productModifyButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(!productModifyButton.isEnabled()) { return; }
-				
+				if(!productModifyButton.isEnabled()) {
+					return;
+				}
 				int productId = Integer.parseInt((String) searchProductTableModel.getValueAt(productTable.getSelectedRow(), 0));
 				
 				ProductModifyFrame productModifyFrame = 
 						new ProductModifyFrame(productId);
 				productModifyFrame.setVisible(true);
 			}
-		
 		});
 		productModifyButton.setBounds(766, 11, 97, 23);
 		contentPane.add(productModifyButton);
