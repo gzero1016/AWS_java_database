@@ -154,6 +154,7 @@ public class ProductSearchFrame extends JFrame {
 		return instance;
 	}
 	
+
 	public void setSearchProductTableModel() {
 		String searchOption = (String) comboBox.getSelectedItem();
 		String searchValue = searchTextField.getText();
